@@ -30,9 +30,42 @@ const friends = [
   },
 ];
 
+//middleware code
+app.use((req, res, next) => {
+  const delta = Date.now();
+  next();
+  const charli = Date.now() - delta;
+  console.log(`${req.method} ${req.url} ${charli}`);
+});
+
+// adding new data to the friend list using post request
+
+app.use(express.json());
+app.post("/friends", (req, res) => {
+  if (!req.body.name) {
+    return res.status(400).json({
+      Error: " Missing friends name",
+    });
+  } else if (!req.body.email) {
+    return res.status(400).json({
+      Error: "email id is missing please add once ",
+    });
+  }
+  const newFriend = {
+    id: friends.length,
+    name: req.body.name,
+    email: req.body.email,
+  };
+  friends.push(newFriend);
+  res.json(newFriend);
+});
+
+//routes
+
 app.get("/friends", (req, res) => {
   res.status(200).json(friends);
 });
+
 //parameterised routes with it's error handeling
 app.get("/friends/:friendID", (req, res) => {
   const friendID = Number(req.params.friendID);
