@@ -12,9 +12,9 @@ app.use((req, res, next) => {
   const charli = Date.now() - delta;
   console.log(`${req.method}${req.baseUrl} ${req.url} ${charli}`);
 });
+app.use('/site',express.static('public'))//express static file middleware
+app.use(express.json()); // json parsing middleware
 
-
-app.use(express.json());
 app.use("/friends", friendsRouter);
 app.use("/messages", messageRouter);
 
